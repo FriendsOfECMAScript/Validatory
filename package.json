@@ -1,0 +1,57 @@
+{
+  "name": "validatory",
+  "version": "0.1.0",
+  "authors": [
+    {
+      "name": "Mikel Tuesta Sanchez",
+      "email": "mikeltuesta@gmail.com",
+      "homepage": "http://mikeltuesta.com"
+    }
+  ],
+  "license": "MIT",
+  "description": "A minimal yet powerful es6 written form validation library. Zero dependencies!",
+  "keywords": [
+    "es6",
+    "es2015",
+    "js",
+    "form-validation",
+    "validation-library"
+  ],
+  "main": "dist/index.js",
+  "files": [
+    "dist",
+    "LICENSE",
+    "README.md"
+  ],
+  "scripts": {
+    "phoenix": "rimraf node_modules && yarn install",
+    "prebuild": "rimraf dist",
+    "eslint": "node_modules/.bin/eslint src/js/**/*.js",
+    "cs": "yarn eslint",
+    "js-bundle": "cp -R src/ dist",
+    "build": "yarn prebuild && mkdirp dist && yarn cs && yarn js-bundle"
+  },
+  "babel": {
+    "presets": [
+      "es2015",
+      "stage-2",
+      "react"
+    ],
+    "plugins": [
+      "transform-class-properties"
+    ]
+  },
+  "devDependencies": {
+    "babel-cli": "^6.18.0",
+    "babel-eslint": "^8.0.1",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-preset-es2015": "^6.14.0",
+    "babel-preset-react": "^6.24.1",
+    "babel-preset-stage-2": "^6.13.0",
+    "eslint": "^4.7.2",
+    "eslint-plugin-babel": "^4.1.2",
+    "eslint-plugin-class-property": "^1.0.6",
+    "eslint-plugin-react": "^7.4.0",
+    "rimraf": "^2.5.4"
+  }
+}

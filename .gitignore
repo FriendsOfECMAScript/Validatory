@@ -1,0 +1,22 @@
+# This file is part of the Validatory package.
+#
+# Copyright (c) 2017-present Friends Of ECMAScript
+#
+# For the full copyright and license information, please view the LICENSE
+# file that was distributed with this source code.
+#
+# @author Beñat Espiña <benatespina@gmail.com>
+
+/config
+/dist
+/node_modules
+/tests/app/node_modules
+/tests/app/vendor
+/tests/app/dist
+/tests/app/var
+/var/cache
+!/var/cache/.gitkeep
+/var/logs
+!/var/logs/.gitkeep
+/yarn.lock
+/composer.lock
