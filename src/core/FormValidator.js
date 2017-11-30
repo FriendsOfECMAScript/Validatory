@@ -35,6 +35,8 @@ class FormValidator {
     this.onFormValidationStateChanged = onFormValidationStateChanged;
     this.onFormElementValidationStateChanged = onFormElementValidationStateChanged;
     this.formElements = [];
+    this.state = STATE.NOT_VALIDATED;
+    setDomNodeDataAttributeByValidatorState(this.formDomNode, this.state);
 
     this.onDomReady = this.onDomReady.bind(this);
     this.onNodeAdded = this.onNodeAdded.bind(this);
@@ -43,8 +45,6 @@ class FormValidator {
     this.validateOnFormElementStateChanged = this.validateOnFormElementStateChanged.bind(this);
 
     this.bindListeners();
-
-    this.setState(STATE.NOT_VALIDATED);
   }
 
   bindListeners() {
@@ -60,7 +60,9 @@ class FormValidator {
   onNodeAdded(nodes) {
     [...nodes]
       .filter(node => isDomNodeDescendantOfDomNode(node, this.formDomNode))
-      .forEach(formElementNode => this.initFormElement);
+      .forEach(formElementNode => this.initFormElement(formElementNode));
+
+    this.setState(this.isValid() ? STATE.VALID : STATE.NOT_VALID);
   }
 
   initFormElement(formElementDomNode) {
@@ -97,6 +99,10 @@ class FormValidator {
     this.onFormValidationStateChanged(this);
   }
 
+  isValid() {
+    return this.formElements.every(formElement => formElement.isValid());
+  }
+
   validate() {
     let firstInvalidInputIndex = -1;
 
@@ -120,7 +126,7 @@ class FormValidator {
   }
 
   validateOnFormElementStateChanged(formElementValidatorInstance) {
-    const isValid = this.formElements.every(formElement => formElement.state === STATE.VALID);
+    const isValid = this.isValid();
 
     this.setState(isValid ? STATE.VALID : STATE.NOT_VALID);
 

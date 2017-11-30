@@ -1,0 +1,91 @@
+// This file is part of the Validatory package.
+//
+// Copyright (c) 2017-present Friends Of ECMAScript
+//
+// For the full copyright and license information, please view the LICENSE
+// file that was distributed with this source code.
+//
+// @author Mikel Tuesta <mikeltuesta@gmail.com>
+
+@import './../_variables/transitions';
+
+$form-textarea-border-color: #d1d1d1;
+$form-textarea-border-color-hover: #0e8fff;
+$form-textarea-border-color-error: #b20008;
+$form-textarea-border-color-valid: #00d44c;
+$form-textarea-placeholder-text-color: rgba(#444, .8);
+$form-textarea-placeholder-transition: $transition-color;
+$form-textarea-transition: $transition-border-color;
+$form-textarea-font-size: 16px;
+$form-textarea-font-size-small: 14px;
+$form-textarea-font-weight: normal;
+$form-textarea-line-height: 20px;
+$form-textarea-line-height-small: 18px;
+
+.form-textarea {
+  appearance: none;
+  border: 1px solid $form-textarea-border-color;
+  border-radius: 0;
+  box-shadow: none;
+  box-sizing: border-box;
+  display: block;
+  font-size: $form-textarea-font-size;
+  font-weight: $form-textarea-font-weight;
+  line-height: $form-textarea-line-height;
+  max-width: 100%;
+  padding: 10px 15px;
+  resize: none;
+  transition: $form-textarea-transition;
+  width: 100%;
+
+  &:focus,
+  &:active {
+    outline: none;
+  }
+
+  &:focus {
+    border: 1px solid $form-textarea-border-color-hover;
+  }
+
+  &::placeholder {
+    color: $form-textarea-placeholder-text-color;
+    transition: $form-textarea-placeholder-transition;
+  }
+
+  &[data-validation-state="not-filled"],
+  &[data-validation-state="not-valid"] {
+    border-color: $form-textarea-border-color-error;
+  }
+
+  &[data-validation-state="valid"] {
+    border-color: $form-textarea-border-color-valid;
+  }
+}
+
+.form-textarea--transparent {
+  background: none;
+  border: 0;
+
+  &:focus,
+  &:active {
+    border: 0;
+  }
+}
+
+.form-textarea--underlined {
+  border: 0;
+  border-bottom: 1px solid $form-textarea-border-color;
+
+  &:focus,
+  &:active {
+    border: 0;
+    border-bottom: 1px solid $form-textarea-border-color-hover;
+  }
+}
+
+.form-textarea--small {
+  font-size: $form-textarea-font-size-small;
+  line-height: $form-textarea-line-height-small;
+  padding-bottom: 12px;
+  padding-top: 12px;
+}

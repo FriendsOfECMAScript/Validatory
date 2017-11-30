@@ -19,7 +19,7 @@ const VALIDATOR_TYPE = {
 
 const
   setDataValidationPatternAttribute = (formElementDomNode, pattern) => {
-    formElementDomNode.setAttribute('data-validation-pattern', pattern);
+    formElementDomNode.setAttribute('data-validate-pattern', pattern);
   },
   preProcessFormElementValidationPattern = formElementDomNode => {
     const
@@ -40,7 +40,7 @@ const
   getFormElementValidatorType = formElementDomNode => {
     if (formElementDomNode.getAttribute('type') === 'checkbox') {
       return VALIDATOR_TYPE.CHECKBOX;
-    } else if (formElementDomNode.hasAttribute('data-validation-pattern')) {
+    } else if (formElementDomNode.hasAttribute('data-validate-pattern')) {
       return VALIDATOR_TYPE.PATTERN;
     }
   };

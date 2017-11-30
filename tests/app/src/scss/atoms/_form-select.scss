@@ -1,0 +1,80 @@
+// This file is part of the Validatory package.
+//
+// Copyright (c) 2017-present Friends Of ECMAScript
+//
+// For the full copyright and license information, please view the LICENSE
+// file that was distributed with this source code.
+//
+// @author Mikel Tuesta <mikeltuesta@gmail.com>
+
+@import './../_variables/transitions';
+
+$form-select-main-color: #0e8fff;
+$form-select-background-color: #fff;
+$form-select-border-color: #d1d1d1;
+$form-select-border-color-focused: $form-select-main-color;
+$form-select-border-color-error: #b20008;
+$form-select-border-color-valid: #00d44c;
+$form-select-dropdown-icon-side: 20px;
+$form-select-dropdown-icon-transition: $transition-transform;
+$form-select-transition: $transition-border-color;
+$form-select-font-size: 16px;
+$form-select-font-weight: normal;
+$form-select-line-height: 20px;
+
+.form-select {
+  position: relative;
+  z-index: 0;
+
+  &::before {
+    content: '\25BE';
+    display: block;
+    position: absolute;
+    right: 15px;
+    top: 10px;
+    font-size: 16px;
+  }
+
+  &:focus {
+    outline: 0;
+  }
+
+  &[data-validation-state="not-filled"],
+  &[data-validation-state="not-valid"] {
+    .form-select__select {
+      border-color: $form-select-border-color-error;
+    }
+  }
+
+  &[data-validation-state="valid"] {
+    .form-select__select {
+      border-color: $form-select-border-color-valid;
+    }
+  }
+}
+
+.form-select--focused {
+  .form-select__select {
+    border-color: $form-select-border-color-focused;
+  }
+}
+
+.form-select__select {
+  appearance: none;
+  background-color: $form-select-background-color;
+  border: 1px solid $form-select-border-color;
+  border-radius: 0;
+  box-shadow: none;
+  box-sizing: border-box;
+  display: block;
+  font-size: $form-select-font-size;
+  font-weight: $form-select-font-weight;
+  line-height: $form-select-line-height;
+  padding: 10px 15px;
+  transition: $form-select-transition;
+  width: 100%;
+
+  &:focus {
+    outline: 0;
+  }
+}

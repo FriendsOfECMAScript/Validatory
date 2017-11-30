@@ -1,0 +1,63 @@
+// This file is part of the Validatory package.
+//
+// Copyright (c) 2017-present Friends Of ECMAScript
+//
+// For the full copyright and license information, please view the LICENSE
+// file that was distributed with this source code.
+//
+// @author Mikel Tuesta <mikeltuesta@gmail.com>
+
+@import './../_variables/transitions';
+
+$form-submit-border-color: #d1d1d1;
+$form-submit-background-color: #dfdfdf;
+$form-submit-background-color-valid: #0e8fff;
+$form-submit-border-color-valid: #0b5acb;
+$form-submit-background-color-hover: darken($form-submit-background-color-valid, 10%);
+$form-submit-border-color-hover: darken($form-submit-border-color-valid, 10%);
+$form-submit-transition: $transition-border-color, $transition-background-color, $transition-color;
+$form-submit-font-size: 16px;
+$form-submit-font-size-small: 14px;
+$form-submit-font-weight: normal;
+$form-submit-line-height: 20px;
+$form-submit-line-height-small: 18px;
+
+.form-submit {
+  appearance: none;
+  background-color: $form-submit-background-color;
+  border: 1px solid $form-submit-border-color;
+  border-radius: 0;
+  box-sizing: border-box;
+  cursor: pointer;
+  display: block;
+  font-size: $form-submit-font-size;
+  font-weight: $form-submit-font-weight;
+  line-height: $form-submit-line-height;
+  padding: 10px 15px;
+  transition: $form-submit-transition;
+  width: 100%;
+
+  &:hover,
+  &:active {
+    color: white;
+    background-color: $form-submit-background-color-hover;
+    border-color: $form-submit-border-color-hover;
+  }
+
+  &:focus,
+  &:active {
+    outline: none;
+  }
+}
+
+.form-submit--valid {
+  color: white;
+  background-color: $form-submit-background-color-valid;
+  border-color: $form-submit-border-color-valid;
+
+  &:hover,
+  &:active {
+    background-color: $form-submit-background-color-hover;
+    border-color: $form-submit-border-color-hover;
+  }
+}

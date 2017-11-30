@@ -19,7 +19,7 @@ class FormElementPatternValidator extends AbstractFormElementValidator {
   }) {
     super({formElementDomNode, onFormElementStateChangedCallback});
 
-    this.validationRegExp = new RegExp(this.formElementDomNode.dataset.validationPattern.trim());
+    this.validationRegExp = new RegExp(this.formElementDomNode.dataset.validatePattern.trim());
   }
 
   validateValue(value) {

@@ -23,13 +23,14 @@ class AbstractFormElementValidator {
     this.formElementDomNode = formElementDomNode;
     this.required = this.formElementDomNode.hasAttribute('required');
     this.validationStateReferenceSelector = this.formElementDomNode.dataset.validationStateReferenceSelector;
+    this.state = STATE.NOT_VALIDATED;
+    setDomNodeDataAttributeByValidatorState(this.getValidationStateReferenceDomNode(), this.state);
 
     this.onFormElementStateChangedCallback = onFormElementStateChangedCallback;
     this.onFormElementInput = this.onFormElementInput.bind(this);
     this.onFormElementChange = this.onFormElementChange.bind(this);
 
     this.bindListeners();
-    this.setState(STATE.NOT_VALIDATED);
   }
 
   bindListeners() {
@@ -67,10 +68,16 @@ class AbstractFormElementValidator {
     dispatchNativeEvent(this.getValidationStateReferenceDomNode(), 'focus');
   }
 
+  isValid() {
+    const isEmpty = this.formElementDomNode.value === '';
+
+    return !this.required && isEmpty || !isEmpty && this.validateValue(this.formElementDomNode.value);
+  }
+
   validate() {
     const
       isEmpty = this.formElementDomNode.value === '',
-      isValid = !this.required && isEmpty || !isEmpty && this.validateValue(this.formElementDomNode.value);
+      isValid = this.isValid();
 
     this.setState(this.required && isEmpty ? STATE.NOT_FILLED : isValid ? STATE.VALID : STATE.NOT_VALID);
 

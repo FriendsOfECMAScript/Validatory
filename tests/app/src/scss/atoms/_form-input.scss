@@ -1,0 +1,89 @@
+// This file is part of the Validatory package.
+//
+// Copyright (c) 2017-present Friends Of ECMAScript
+//
+// For the full copyright and license information, please view the LICENSE
+// file that was distributed with this source code.
+//
+// @author Mikel Tuesta <mikeltuesta@gmail.com>
+
+@import './../_variables/transitions';
+
+$form-input-border-color: #d1d1d1;
+$form-input-border-color-hover: #0e8fff;
+$form-input-border-color-error: #b20008;
+$form-input-border-color-valid: #00d44c;
+$form-input-placeholder-text-color: rgba(#444, .8);
+$form-input-placeholder-transition: $transition-color;
+$form-input-transition: $transition-border-color;
+$form-input-font-size: 16px;
+$form-input-font-size-small: 14px;
+$form-input-font-weight: normal;
+$form-input-line-height: 20px;
+$form-input-line-height-small: 18px;
+
+.form-input {
+  appearance: none;
+  border: 1px solid $form-input-border-color;
+  border-radius: 0;
+  box-shadow: none;
+  box-sizing: border-box;
+  display: block;
+  font-size: $form-input-font-size;
+  font-weight: $form-input-font-weight;
+  line-height: $form-input-line-height;
+  padding: 10px 15px;
+  transition: $form-input-transition;
+  width: 100%;
+
+  &:focus,
+  &:active {
+    outline: none;
+  }
+
+  &:focus {
+    border: 1px solid $form-input-border-color-hover;
+  }
+
+  &::placeholder {
+    color: $form-input-placeholder-text-color;
+    transition: $form-input-placeholder-transition;
+  }
+
+  &[data-validation-state="not-filled"],
+  &[data-validation-state="not-valid"] {
+    border-color: $form-input-border-color-error;
+  }
+
+  &[data-validation-state="valid"] {
+    border-color: $form-input-border-color-valid;
+  }
+}
+
+.form-input--transparent {
+  background: none;
+  border: 0;
+
+  &:focus,
+  &:active {
+    border: 0;
+  }
+}
+
+.form-input--underlined {
+  border: 0;
+  border-bottom: 1px solid $form-input-border-color;
+
+  &:focus,
+  &:active {
+    border: 0;
+    border-bottom: 1px solid $form-input-border-color-hover;
+  }
+}
+
+.form-input--small {
+  font-size: $form-input-font-size-small;
+  line-height: $form-input-line-height-small;
+  padding-bottom: 12px;
+  padding-top: 12px;
+}

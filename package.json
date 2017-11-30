@@ -17,7 +17,8 @@
     "form-validation",
     "validation-library"
   ],
-  "main": "dist/index.js",
+  "main": "dist/es5/index.js",
+  "module": "dist/es6/index.js",
   "files": [
     "dist",
     "LICENSE",
@@ -28,8 +29,9 @@
     "prebuild": "rimraf dist",
     "eslint": "node_modules/.bin/eslint src/js/**/*.js",
     "cs": "yarn eslint",
-    "js-bundle": "cp -R src/ dist",
-    "build": "yarn prebuild && mkdirp dist && yarn cs && yarn js-bundle"
+    "js-bundle": "node_modules/.bin/babel --copy-files --out-dir dist/es5 src",
+    "module-bundle": "cp -R src/ dist/es6",
+    "build": "yarn prebuild && yarn cs && yarn js-bundle && yarn module-bundle"
   },
   "babel": {
     "presets": [

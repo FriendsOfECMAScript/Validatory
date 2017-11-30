@@ -1,0 +1,38 @@
+// This file is part of the Validatory package.
+//
+// Copyright (c) 2017-present Friends Of ECMAScript
+//
+// For the full copyright and license information, please view the LICENSE
+// file that was distributed with this source code.
+//
+// @author Mikel Tuesta <mikeltuesta@gmail.com>
+
+@import './../_definitions/animations';
+
+$form-group-errors-animation: $animation-vertical-node-in;
+
+@mixin form_group_validation_errors($errorsClassName) {
+  #{$errorsClassName} {
+    display: none;
+    position: relative;
+    z-index: -1;
+  }
+
+  [data-validation-state="not-valid"] + #{$errorsClassName},
+  [data-validation-state="not-filled"] + #{$errorsClassName} {
+    animation: $form-group-errors-animation;
+    display: block;
+  }
+
+  [data-validation-state="not-valid"] + #{$errorsClassName} {
+    .form-error--not-valid {
+      display: block;
+    }
+  }
+
+  [data-validation-state="not-filled"] + #{$errorsClassName} {
+    .form-error--not-filled {
+      display: block;
+    }
+  }
+}

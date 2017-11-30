@@ -1,0 +1,77 @@
+// This file is part of the Validatory package.
+//
+// Copyright (c) 2017-present Friends Of ECMAScript
+//
+// For the full copyright and license information, please view the LICENSE
+// file that was distributed with this source code.
+//
+// @author Mikel Tuesta <mikeltuesta@gmail.com>
+
+@import './../_variables/transitions';
+
+$form-checkbox-background-color: #0e8fff;
+$form-checkbox-border-color: #d1d1d1;
+$form-checkbox-border-color-focus: #0e8fff;
+$form-checkbox-text-color: #444;
+$form-checkbox-font-size: 16px;
+$form-checkbox-font-weight: normal;
+$form-checkbox-line-height: 20px;
+$form-checkbox-check-transition: $transition-background-color, $transition-transform;
+$form-checkbox-check-border-transition: $transition-border-color;
+$form-checkbox-check-side: 16px;
+
+.form-checkbox {
+  color: $form-checkbox-text-color;
+  display: inline-block;
+  font-size: $form-checkbox-font-size;
+  font-weight: $form-checkbox-font-weight;
+  line-height: $form-checkbox-line-height;
+  position: relative;
+
+  &:focus {
+    outline: none;
+
+    .form-checkbox__content::before {
+      border-color: $form-checkbox-border-color-focus;
+    }
+  }
+}
+
+.form-checkbox__content {
+  display: block;
+  padding-left: 30px;
+  position: relative;
+
+  &::after,
+  &::before {
+    background-color: white;
+    content: '';
+    height: $form-checkbox-check-side;
+    position: absolute;
+    transform-origin: center center;
+    width: $form-checkbox-check-side;
+  }
+
+  &::after {
+    left: 1px;
+    top: 1px;
+    transform: scale(0);
+    transition: $form-checkbox-check-transition;
+  }
+
+  &::before {
+    border: 1px solid $form-checkbox-border-color;
+    left: 0;
+    top: 0;
+    transition: $form-checkbox-check-border-transition;
+  }
+}
+
+.form-checkbox__check {
+  display: none;
+
+  &:checked + .form-checkbox__content::after {
+    background-color: $form-checkbox-background-color;
+    transform: scale(1);
+  }
+}

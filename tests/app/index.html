@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="es">
+    <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="./dist/css/app.css"/>
+    </head>
+    <body>
+        <script src="./dist/js/app.js"></script>
+        <main class="main">
+            <header class="header">
+                <h1>Validatory</h1>
+                <p>A minimal yet powerful es6 written form validation library. Zero dependencies!</p>
+            </header>
+            <article class="article">
+                <section>
+                    <form id="validatory-form" class="form" novalidate data-validate>
+                        <h4>This is a form integrated component test. It will validate the form using the <i>Validatory</i> library.</h4>
+
+                        <div class="form-group-input">
+                            <div class="form-group-input__label">
+                                <label class="form-label" for="name"><span class="form-label__required">*</span>Name</label>
+                            </div>
+                            <input id="name" name="name" type="text" class="form-input" placeholder="Enter your name..." required data-validate data-validate-any autocomplete="off" tabindex="0">
+                            <div class="form-group-input__errors">
+                                <p class="form-error form-error--not-filled">This field is required.</p>
+                            </div>
+                        </div>
+
+                        <div class="form-group-input">
+                            <div class="form-group-input__label">
+                                <label class="form-label" for="required-email"><span class="form-label__required">*</span>Email</label>
+                            </div>
+                            <input id="required-email" name="required-email" type="email" class="form-input" placeholder="Enter an email..." required data-validate data-validate-email autocomplete="off" tabindex="0">
+                            <div class="form-group-input__errors">
+                                <p class="form-error  form-error--not-filled">This field is required.</p>
+                                <p class="form-error  form-error--not-valid">Entered email does not match the required pattern.</p>
+                            </div>
+                        </div>
+
+                        <div class="form-group-input">
+                            <div class="form-group-input__label">
+                                <label class="form-label" for="email">Email</label>
+                            </div>
+                            <input id="email" name="email" type="email" class="form-input" placeholder="Enter an email..." data-validate data-validate-email autocomplete="off" tabindex="0">
+                            <div class="form-group-input__errors">
+                                <p class="form-error  form-error--not-valid">Entered email does not match the required pattern.</p>
+                            </div>
+                        </div>
+
+                        <div class="form-group-input">
+                            <div class="form-group-input__label">
+                                <label class="form-label" for="required-phone"><span class="form-label__required">*</span>Phone</label>
+                            </div>
+                            <input id="required-phone" name="required-phone" type="tel" class="form-input" placeholder="Enter a 9 digit phone..." required data-validate data-validate-phone autocomplete="off" tabindex="0">
+                            <div class="form-group-input__errors">
+                                <p class="form-error  form-error--not-filled">This field is required.</p>
+                                <p class="form-error  form-error--not-valid">Entered phone does not match the required pattern.</p>
+                            </div>
+                        </div>
+
+                        <div class="form-group-input">
+                            <div class="form-group-input__label">
+                                <label class="form-label" for="phone">Phone</label>
+                            </div>
+                            <input id="phone" name="phone" type="tel" class="form-input" placeholder="Enter a 9 digit phone..." data-validate data-validate-phone autocomplete="off" tabindex="0">
+                            <div class="form-group-input__errors">
+                                <p class="form-error  form-error--not-valid">Entered phone does not match the required pattern.</p>
+                            </div>
+                        </div>
+
+                        <div class="form-group-select">
+                            <div class="form-group-select__label">
+                                <label class="form-label" for="required-genre"><span class="form-label__required">*</span>Genre</label>
+                            </div>
+                            <div class="form-select">
+                                <select class="form-select__select" name="required-genre" id="required-genre" required data-validate data-validate-any data-validation-state-reference-selector=".form-select">
+                                    <option class="form-select__select-no-selection" value="--">--</option>
+                                    <option value="0">Male</option>
+                                    <option value="1">Female</option>
+                                </select>
+                            </div>
+                            <div class="form-group-select__errors">
+                                <p class="form-error  form-error--not-filled">This field is required.</p>
+                            </div>
+                        </div>
+
+                        <div class="form-group-select">
+                            <div class="form-group-select__label">
+                                <label class="form-label" for="genre"><span class="form-label__required">*</span>Genre (default value not valid)</label>
+                            </div>
+                            <div class="form-select">
+                                <select class="form-select__select" name="genre" id="genre" required data-validate data-validate-pattern="^(?!.*--).*$" data-validation-state-reference-selector=".form-select">
+                                    <option class="form-select__select-no-selection" value="--">--</option>
+                                    <option value="0">Male</option>
+                                    <option value="1">Female</option>
+                                </select>
+                            </div>
+                            <div class="form-group-select__errors">
+                                <p class="form-error  form-error--not-filled">This field is required.</p>
+                                <p class="form-error  form-error--not-valid">The selection option is not valid.</p>
+                            </div>
+                        </div>
+
+                        <div class="form-group-textarea">
+                            <div class="form-group-textarea__label">
+                                <label class="form-label" for="about"><span class="form-label__required">*</span>About you</label>
+                            </div>
+                            <textarea id="about" name="about" class="form-textarea" placeholder="Tell us about you..." rows="5" required data-validate data-validate-any autocomplete="off" tabindex="0"></textarea>
+                            <div class="form-group-textarea__errors">
+                                <p class="form-error  form-error--not-filled">This field is required.</p>
+                            </div>
+                        </div>
+
+                        <div class="form-group-textarea">
+                            <div class="form-group-textarea__label">
+                                <label class="form-label" for="palindrome"><span class="form-label__required">*</span>2-5 letter palindrome</label>
+                            </div>
+                            <textarea id="palindrome" name="palindrome" class="form-textarea" placeholder="Type any 2-5 letter palindrome..." rows="5" required data-validate data-validate-pattern="\b(\w)?(\w)\w?\2\1" autocomplete="off" tabindex="0"></textarea>
+                            <div class="form-group-textarea__errors">
+                                <p class="form-error  form-error--not-filled">This field is required.</p>
+                                <p class="form-error  form-error--not-valid">There is no any 2-5 letter palindrome.</p>
+                            </div>
+                        </div>
+
+                        <div class="form-group-checkbox">
+                            <label class="form-checkbox" tabindex="0">
+                                <input type="checkbox" class="form-checkbox__check" id="terms" name="terms" required data-validate data-validate-any data-validation-state-reference-selector=".form-checkbox">
+                                <span class="form-checkbox__content">I have read an accept the terms and conditions</span>
+                            </label>
+
+                            <div class="form-group-checkbox__errors">
+                                <p class="form-error  form-error--not-valid">You haven't accepted the terms and conditions.</p>
+                            </div>
+                        </div>
+
+                        <button class="form-submit" type="submit">Submit!</button>
+                    </form>
+                </section>
+            </article>
+        </main>
+    </body>
+</html>
