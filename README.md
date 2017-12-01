@@ -251,3 +251,7 @@ class FormCheckboxValidator extends AbstractFormElementValidator {
 
 export default FormCheckboxValidator;
 ```
+
+For a full working example, checkout the [tests/app][1] demo.
+
+[1]: https://github.com/FriendsOfECMAScript/Validatory/tree/master/tests/app
