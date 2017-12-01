@@ -179,7 +179,7 @@ init({
 ```
 
 ### Styling
-As the library will set a **data-validation-state** attribute, we will style the element's using this *data attribute*. 
+As the library will set a **data-validation-state** attribute, we will style the element using this *data attribute*. 
 For example:
 ```scss
 .form-input {
