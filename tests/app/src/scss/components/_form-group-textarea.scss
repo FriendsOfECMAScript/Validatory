@@ -7,11 +7,10 @@
 //
 // @author Mikel Tuesta <mikeltuesta@gmail.com>
 
-@import './../_placeholders/form-group';
 @import './../_mixins/form-validation';
 
 .form-group-textarea {
-  margin-bottom: 30px;
+  margin-bottom: 10px;
 }
 
 .form-group-textarea__label {

@@ -7,7 +7,6 @@
 //
 // @author Mikel Tuesta <mikeltuesta@gmail.com>
 
-@import './../_placeholders/form-group';
 @import './../_mixins/form-validation';
 
 .form-group-checkbox {
@@ -15,7 +14,7 @@
 }
 
 .form-group-checkbox__label {
-  @extend %form-group__label;
+  margin-bottom: 10px;
 }
 
 @include form_group_validation_errors('.form-group-checkbox__errors');
