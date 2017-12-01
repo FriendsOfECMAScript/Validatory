@@ -11,14 +11,12 @@ import isDomNodeDescendantOfDomNode from './../dom/isDomNodeDescendantOfDomNode'
 import setDomNodeDataAttributeByValidatorState from './../dom/setDomNodeDataAttributeByValidatorState';
 import onDomReady from './../events/onDomReady';
 import onNodeAdded from './../events/onNodeAdded';
-import FormElementPatternValidator from './../validators/FormElementPatternValidator';
-import FormCheckboxValidator from './../validators/FormCheckboxValidator';
+import * as Patterns from './../patterns/patterns';
 import {STATE} from './FormValidatorState';
-import {
-  preProcessFormElementValidationPattern,
-  getFormElementValidatorType,
-  VALIDATOR_TYPE
-} from './FormElementValidatorTypes';
+import validatorRegistry from './ValidatorRegistry';
+import FormElementValidator from './FormElementValidator';
+import checkboxValidator from '../validators/checkboxValidator';
+import patternValidator from '../validators/patternValidator';
 
 /**
  * @author Mikel Tuesta <mikeltuesta@gmail.com>
@@ -38,6 +36,8 @@ class FormValidator {
     this.state = STATE.NOT_VALIDATED;
     setDomNodeDataAttributeByValidatorState(this.formDomNode, this.state);
 
+    this.addBuiltInValidators();
+
     this.onDomReady = this.onDomReady.bind(this);
     this.onNodeAdded = this.onNodeAdded.bind(this);
     this.onFormSubmit = this.onFormSubmit.bind(this);
@@ -45,6 +45,11 @@ class FormValidator {
     this.validateOnFormElementStateChanged = this.validateOnFormElementStateChanged.bind(this);
 
     this.bindListeners();
+  }
+
+  addBuiltInValidators() {
+    validatorRegistry.add(patternValidator);
+    validatorRegistry.add(checkboxValidator);
   }
 
   bindListeners() {
@@ -66,7 +71,7 @@ class FormValidator {
   }
 
   initFormElement(formElementDomNode) {
-    preProcessFormElementValidationPattern(formElementDomNode);
+    this.preProcessFormElementValidationPattern(formElementDomNode);
 
     const validator = this.getFormElementValidatorInstance(formElementDomNode);
 
@@ -97,6 +102,27 @@ class FormValidator {
     setDomNodeDataAttributeByValidatorState(this.formDomNode, this.state);
 
     this.onFormValidationStateChanged(this);
+  }
+
+  setDataValidationPatternAttribute(formElementDomNode, pattern) {
+    formElementDomNode.setAttribute('data-validate-pattern', pattern);
+  }
+
+  preProcessFormElementValidationPattern(formElementDomNode) {
+    const
+      builtInValidationPatternsKeys = ['email', 'phone', 'any'],
+      needsPreProcessing = builtInValidationPatternsKeys.some(key =>
+        formElementDomNode.hasAttribute(`data-validate-${key}`));
+
+    if (needsPreProcessing) {
+      if (formElementDomNode.hasAttribute('data-validate-email')) {
+        this.setDataValidationPatternAttribute(formElementDomNode, Patterns.email);
+      } else if (formElementDomNode.hasAttribute('data-validate-phone')) {
+        this.setDataValidationPatternAttribute(formElementDomNode, Patterns.phone);
+      } else {
+        this.setDataValidationPatternAttribute(formElementDomNode, Patterns.any);
+      }
+    }
   }
 
   isValid() {
@@ -134,22 +160,18 @@ class FormValidator {
   }
 
   getFormElementValidatorInstance(formElementDomNode) {
-    const formElementValidatorType = getFormElementValidatorType(formElementDomNode);
+    const validator = validatorRegistry.getValidators().find(validator => validator.supports(formElementDomNode));
 
-    switch (formElementValidatorType) {
-      case VALIDATOR_TYPE.CHECKBOX:
-        return new FormCheckboxValidator({
-          formElementDomNode,
-          onFormElementStateChangedCallback: this.validateOnFormElementStateChanged
-        });
-      case VALIDATOR_TYPE.PATTERN:
-        return new FormElementPatternValidator({
-          formElementDomNode,
-          onFormElementStateChangedCallback: this.validateOnFormElementStateChanged
-        });
+    if (validator === undefined) {
+      return null;
     }
 
-    return null;
+    return new FormElementValidator({
+      formElementDomNode,
+      emptyFn: validator.isEmpty,
+      validationFn: validator.isValid,
+      onFormElementStateChangedCallback: this.validateOnFormElementStateChanged
+    });
   }
 }
 

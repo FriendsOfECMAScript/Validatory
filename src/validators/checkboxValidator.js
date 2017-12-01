@@ -7,15 +7,16 @@
  * file that was distributed with this source code.
  */
 
-import AbstractFormElementValidator from './../core/AbstractFormElementValidator';
+import Validator from '../core/Validator';
 
 /**
  * @author Mikel Tuesta <mikeltuesta@gmail.com>
  */
-class FormCheckboxValidator extends AbstractFormElementValidator {
-  validateValue(value) {
-    return this.formElementDomNode.checked;
-  }
-}
 
-export default FormCheckboxValidator;
+const checkboxValidator = new Validator({
+  supports: node => node.getAttribute('type') === 'checkbox',
+  isEmpty: node => false,
+  isValid: node => node.checked,
+});
+
+export default checkboxValidator;

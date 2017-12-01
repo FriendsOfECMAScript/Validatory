@@ -8,13 +8,15 @@
  */
 
 import init from './core/FormValidators';
-import AbstractFormElementValidator from './core/AbstractFormElementValidator';
+import validatorRegistry from './core/ValidatorRegistry';
+import Validator from './core/Validator';
 import * as Patterns from './patterns/patterns';
 import {STATE} from './core/FormValidatorState';
 
 export {
   init,
+  validatorRegistry,
+  Validator,
   Patterns,
-  AbstractFormElementValidator,
   STATE
 };

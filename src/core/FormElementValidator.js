@@ -14,13 +14,17 @@ import dispatchNativeEvent from './../dom/dispatchNativeEvent';
 /**
  * @author Mikel Tuesta <mikeltuesta@gmail.com>
  */
-class AbstractFormElementValidator {
+class FormElementValidator {
 
   constructor({
     formElementDomNode,
+    emptyFn,
+    validationFn,
     onFormElementStateChangedCallback = () => {}
   }) {
     this.formElementDomNode = formElementDomNode;
+    this.emptyFn = emptyFn;
+    this.validationFn = validationFn;
     this.required = this.formElementDomNode.hasAttribute('required');
     this.validationStateReferenceSelector = this.formElementDomNode.dataset.validationStateReferenceSelector;
     this.state = STATE.NOT_VALIDATED;
@@ -69,24 +73,20 @@ class AbstractFormElementValidator {
   }
 
   isValid() {
-    const isEmpty = this.formElementDomNode.value === '';
+    const isEmpty = this.emptyFn(this.formElementDomNode); // = this.formElementDomNode.value === '';
 
-    return !this.required && isEmpty || !isEmpty && this.validateValue(this.formElementDomNode.value);
+    return !this.required && isEmpty || !isEmpty && this.validationFn(this.formElementDomNode);
   }
 
   validate() {
     const
-      isEmpty = this.formElementDomNode.value === '',
+      isEmpty = this.emptyFn(this.formElementDomNode),
       isValid = this.isValid();
 
     this.setState(this.required && isEmpty ? STATE.NOT_FILLED : isValid ? STATE.VALID : STATE.NOT_VALID);
 
     return isValid;
   }
-
-  validateValue(value) { // eslint-disable-line no-unused-vars
-    throw new TypeError('In order to extend AbstractFormElementValidator class you must implement validateValue method.');
-  }
 }
 
-export default AbstractFormElementValidator;
+export default FormElementValidator;

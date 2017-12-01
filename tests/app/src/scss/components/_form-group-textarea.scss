@@ -14,7 +14,7 @@
 }
 
 .form-group-textarea__label {
-  @extend %form-group__label;
+  margin-bottom: 10px;
 }
 
 @include form_group_validation_errors('.form-group-textarea__errors');
