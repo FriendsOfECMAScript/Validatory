@@ -151,8 +151,6 @@ class FormValidator {
   }
 
   getFormElementValidatorInstance(formElementDomNode) {
-    console.log(validatorRegistry.getValidators());
-
     const validator = validatorRegistry.getValidators().find(validator => validator.supports(formElementDomNode));
 
     if (validator === undefined) {

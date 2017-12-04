@@ -11,12 +11,8 @@
  * @author Mikel Tuesta <mikeltuesta@gmail.com>
  */
 class NodeAddedEventPublisher {
-  isMutationObserverInitialized;
-  mutationObserver;
-  subscribersSelectors;
-  subscribersOnNodeAddedCallbacks;
-
   constructor() {
+    this.mutationObserver = null;
     this.subscribersSelectors = [];
     this.subscribersOnNodeAddedCallbacks = [];
     this.isMutationObserverInitialized = false;
