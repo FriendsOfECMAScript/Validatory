@@ -220,18 +220,19 @@ We will use the **data-validation-state** attribute to show/hide the associated 
 
 [data-validation-state="not-valid"] + .form-group-input__errors,
 [data-validation-state="not-filled"] + .form-group-input__errors {
-    animation: $form-group-errors-animation;
     display: block;
 }
 
 [data-validation-state="not-valid"] + .form-group-input__errors {
   .form-error--not-valid {
+    animation: $form-group-errors-animation;
     display: block;
   }
 }
 
 [data-validation-state="not-filled"] + .form-group-input__errors {
   .form-error--not-filled {
+    animation: $form-group-errors-animation;
     display: block;
   }
 }
