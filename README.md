@@ -17,7 +17,7 @@ The library will validate your *form-elements* using by default a ***RegExp* pat
 corresponding `data-validation-state` attribute both to the *form-element* and the associated *form* after each 
 *form-element*'s **input** and **change** events.
 
-The *form-elements* will be the ones that are queried with the initialization `formElementSelector` parameter, and the 
+The *form-elements* will be the ones that are queried with the initialization's `formElementSelector` parameter, and the 
 `data-validation-state` will be added by default to the *form-element*'s root node.
 
 The *form-element* will have the following states:
@@ -43,6 +43,7 @@ For example, after the validation has been triggered, a non-valid form element w
 * Validate **required**
 * Validate values with **regular expressions**
 * **Built-in validation patterns**: 9 digit phone number, Email, ...
+* Write your own **custom validator**
 
 ## Usage
 In order to work with the library your DOM must, at least, have the following *data attributes* properly set.
@@ -237,20 +238,22 @@ We will use the **data-validation-state** attribute to show/hide the associated 
 ```
 
 ### Extending the library's Validators
-In order to extend the library's validators, we need to extend the **AbstractFormElementValidator** class, overriding 
-the required **validateValue(value)** method. For example:
+In order to extend the library's validators, we will add a new **Validator** instance to the *ValidatorRegistry*, 
+passing the required constructor parameters. For example:
 
 ```js
-import {AbstractFormElementValidator} from 'validatory';
+import {validatorRegistry, Validator} from 'validatory';
 
-class FormCheckboxValidator extends AbstractFormElementValidator {
-  validateValue(value) {
-    return this.formElementDomNode.checked;
-  }
-}
+const customValidator = new Validator({
+  supports: node => node.classList.contains('form-textarea'),
+  isEmpty: node => node.value === '',
+  isValid: node => node.value === 'test',
+});
 
-export default FormCheckboxValidator;
+validatorRegistry.add(customValidator);
 ```
+
+This way, any `.form-textarea` css class containing element will be validated using the provided implementation.
 
 For a full working example, checkout the [tests/app][1] demo.
 

@@ -14,7 +14,7 @@
 import './../scss/app.scss';
 
 import $ from 'jquery';
-import {init, STATE} from 'validatory';
+import {init, STATE, validatorRegistry, Validator} from 'validatory';
 
 const getStateString = stateValue => {
   switch (stateValue) {
@@ -28,6 +28,13 @@ const getStateString = stateValue => {
       return 'NOT FILLED';
   }
 };
+
+const customValidator = new Validator({
+  supports: node => node.classList.contains('form-textarea'),
+  isEmpty: node => node.value === '',
+  isValid: node => node.value === 'test',
+});
+validatorRegistry.add(customValidator);
 
 const
   formValidationStateChangedCallback = formValidatorInstance => {

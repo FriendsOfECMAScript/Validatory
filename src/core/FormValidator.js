@@ -15,8 +15,6 @@ import * as Patterns from './../patterns/patterns';
 import {STATE} from './FormValidatorState';
 import validatorRegistry from './ValidatorRegistry';
 import FormElementValidator from './FormElementValidator';
-import checkboxValidator from '../validators/checkboxValidator';
-import patternValidator from '../validators/patternValidator';
 
 /**
  * @author Mikel Tuesta <mikeltuesta@gmail.com>
@@ -36,8 +34,6 @@ class FormValidator {
     this.state = STATE.NOT_VALIDATED;
     setDomNodeDataAttributeByValidatorState(this.formDomNode, this.state);
 
-    this.addBuiltInValidators();
-
     this.onDomReady = this.onDomReady.bind(this);
     this.onNodeAdded = this.onNodeAdded.bind(this);
     this.onFormSubmit = this.onFormSubmit.bind(this);
@@ -45,11 +41,6 @@ class FormValidator {
     this.validateOnFormElementStateChanged = this.validateOnFormElementStateChanged.bind(this);
 
     this.bindListeners();
-  }
-
-  addBuiltInValidators() {
-    validatorRegistry.add(patternValidator);
-    validatorRegistry.add(checkboxValidator);
   }
 
   bindListeners() {
@@ -160,6 +151,8 @@ class FormValidator {
   }
 
   getFormElementValidatorInstance(formElementDomNode) {
+    console.log(validatorRegistry.getValidators());
+
     const validator = validatorRegistry.getValidators().find(validator => validator.supports(formElementDomNode));
 
     if (validator === undefined) {
