@@ -6,16 +6,21 @@
       "name": "Mikel Tuesta Sanchez",
       "email": "mikeltuesta@gmail.com",
       "homepage": "http://mikeltuesta.com"
+    },
+    {
+      "name": "Beñat Espiña Díaz",
+      "email": "benatespina@gmail.com",
+      "homepage": "https://benatespina.com"
     }
   ],
   "license": "MIT",
-  "description": "A minimal yet powerful es6 written form validation library. Zero dependencies!",
+  "description": "A minimal yet powerful form validation library written in modern JavaScript. Zero dependencies!",
   "keywords": [
-    "es6",
-    "es2015",
-    "js",
+    "javascript",
     "form-validation",
-    "validation-library"
+    "library",
+    "validation",
+    "form"
   ],
   "main": "dist/es5/index.js",
   "module": "dist/es6/index.js",

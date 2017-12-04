@@ -1,5 +1,5 @@
 # Validatory
-> A minimal yet powerful es6 written form validation library. Zero dependencies!
+> A minimal yet powerful form validation library written in modern JavaScript. Zero dependencies!
 
 ## Installation
 
