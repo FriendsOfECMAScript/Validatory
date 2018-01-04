@@ -29,19 +29,19 @@ const getStateString = stateValue => {
   }
 };
 
-const customValidator = new Validator({
-  supports: node => node.classList.contains('form-textarea'),
+const palindromeValidator = new Validator({
+  supports: node => node.id === 'palindrome',
   isEmpty: node => node.value === '',
-  isValid: node => node.value === 'test',
+  isValid: node => node.value === node.value.split('').reverse().join(''),
 });
-validatorRegistry.add(customValidator);
+validatorRegistry.add(palindromeValidator);
 
 const
   formValidationStateChangedCallback = formValidatorInstance => {
-//    console.log(`Form state changed to: [${getStateString(formValidatorInstance.state)}]`);
+    console.log(`Form state changed to: [${getStateString(formValidatorInstance.state)}]`);
   },
   formElementValidationStateChangedCallback = formElementValidatorInstance => {
-//    console.log(`Form element state changed to: [${getStateString(formElementValidatorInstance.state)}]`);
+    console.log(`Form element state changed to: [${getStateString(formElementValidatorInstance.state)}]`);
   };
 
 init({
@@ -51,6 +51,7 @@ init({
   onFormElementValidationStateChanged: formElementValidationStateChangedCallback
 });
 
+/* eslint-disable max-len */
 setTimeout(() => {
   // Inject new form-group-input to test nodeAdded observing
   const html = `
@@ -77,3 +78,4 @@ setTimeout(() => {
 
   $('.form-group-checkbox').before($.parseHTML(html));
 }, 5000);
+/* eslint-enable max-len */

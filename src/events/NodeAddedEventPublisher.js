@@ -48,7 +48,7 @@ class NodeAddedEventPublisher {
 
   onNodeMutated(mutations) {
     mutations.forEach(mutation =>
-      [...mutation.addedNodes]
+      [...Array.from(mutation.addedNodes)]
         .forEach(node => {
           const
             matchedNodesBySelector = this.getMatchedNodesBySelector(node),
@@ -76,7 +76,7 @@ class NodeAddedEventPublisher {
 
     const getMatchedNodesBySelector = (rootNode) => {
       this.subscribersSelectors.forEach(selector => {
-        const rootNodeMatchesSelector = [...document.querySelectorAll(selector)].find(matchingNode =>
+        const rootNodeMatchesSelector = [...Array.from(document.querySelectorAll(selector))].find(matchingNode =>
           matchingNode === rootNode);
 
         if (rootNodeMatchesSelector) {
@@ -86,7 +86,7 @@ class NodeAddedEventPublisher {
         }
       });
 
-      [...rootNode.childNodes].forEach(node => getMatchedNodesBySelector(node));
+      [...Array.from(rootNode.childNodes)].forEach(node => getMatchedNodesBySelector(node));
     };
 
     getMatchedNodesBySelector(rootNode);

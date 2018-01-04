@@ -73,7 +73,7 @@ class FormElementValidator {
   }
 
   isValid() {
-    const isEmpty = this.emptyFn(this.formElementDomNode); // = this.formElementDomNode.value === '';
+    const isEmpty = this.emptyFn(this.formElementDomNode);
 
     return !this.required && isEmpty || !isEmpty && this.validationFn(this.formElementDomNode);
   }

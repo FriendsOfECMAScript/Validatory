@@ -3,6 +3,13 @@
     <head>
         <meta charset="utf-8">
         <link rel="stylesheet" href="./dist/css/app.css"/>
+        <style type="text/css">
+            .form-legend {
+                color: #aaa;
+                font-size: 13px;
+                margin-left: 15px;
+            }
+        </style>
     </head>
     <body>
         <script src="./dist/js/app.js"></script>
@@ -32,8 +39,8 @@
                             </div>
                             <input id="required-email" name="required-email" type="email" class="form-input" placeholder="Enter an email..." required data-validate data-validate-email autocomplete="off" tabindex="0">
                             <div class="form-group-input__errors">
-                                <p class="form-error  form-error--not-filled">This field is required.</p>
-                                <p class="form-error  form-error--not-valid">Entered email does not match the required pattern.</p>
+                                <p class="form-error form-error--not-filled">This field is required.</p>
+                                <p class="form-error form-error--not-valid">Entered email does not match the required pattern.</p>
                             </div>
                         </div>
 
@@ -43,7 +50,7 @@
                             </div>
                             <input id="email" name="email" type="email" class="form-input" placeholder="Enter an email..." data-validate data-validate-email autocomplete="off" tabindex="0">
                             <div class="form-group-input__errors">
-                                <p class="form-error  form-error--not-valid">Entered email does not match the required pattern.</p>
+                                <p class="form-error form-error--not-valid">Entered email does not match the required pattern.</p>
                             </div>
                         </div>
 
@@ -53,8 +60,8 @@
                             </div>
                             <input id="required-phone" name="required-phone" type="tel" class="form-input" placeholder="Enter a 9 digit phone..." required data-validate data-validate-phone autocomplete="off" tabindex="0">
                             <div class="form-group-input__errors">
-                                <p class="form-error  form-error--not-filled">This field is required.</p>
-                                <p class="form-error  form-error--not-valid">Entered phone does not match the required pattern.</p>
+                                <p class="form-error form-error--not-filled">This field is required.</p>
+                                <p class="form-error form-error--not-valid">Entered phone does not match the required pattern.</p>
                             </div>
                         </div>
 
@@ -64,7 +71,7 @@
                             </div>
                             <input id="phone" name="phone" type="tel" class="form-input" placeholder="Enter a 9 digit phone..." data-validate data-validate-phone autocomplete="off" tabindex="0">
                             <div class="form-group-input__errors">
-                                <p class="form-error  form-error--not-valid">Entered phone does not match the required pattern.</p>
+                                <p class="form-error form-error--not-valid">Entered phone does not match the required pattern.</p>
                             </div>
                         </div>
 
@@ -80,7 +87,7 @@
                                 </select>
                             </div>
                             <div class="form-group-select__errors">
-                                <p class="form-error  form-error--not-filled">This field is required.</p>
+                                <p class="form-error form-error--not-filled">This field is required.</p>
                             </div>
                         </div>
 
@@ -96,8 +103,8 @@
                                 </select>
                             </div>
                             <div class="form-group-select__errors">
-                                <p class="form-error  form-error--not-filled">This field is required.</p>
-                                <p class="form-error  form-error--not-valid">The selection option is not valid.</p>
+                                <p class="form-error form-error--not-filled">This field is required.</p>
+                                <p class="form-error form-error--not-valid">The selection option is not valid.</p>
                             </div>
                         </div>
 
@@ -107,18 +114,19 @@
                             </div>
                             <textarea id="about" name="about" class="form-textarea" placeholder="Tell us about you..." rows="5" required data-validate data-validate-any autocomplete="off" tabindex="0"></textarea>
                             <div class="form-group-textarea__errors">
-                                <p class="form-error  form-error--not-filled">This field is required.</p>
+                                <p class="form-error form-error--not-filled">This field is required.</p>
                             </div>
                         </div>
 
                         <div class="form-group-textarea">
                             <div class="form-group-textarea__label">
-                                <label class="form-label" for="palindrome"><span class="form-label__required">*</span>2-5 letter palindrome</label>
+                                <label class="form-label" for="palindrome"><span class="form-label__required">*</span>Palindrome</label>
+                                <p class="form-legend">This textarea will be validated against a custom validator</p>
                             </div>
-                            <textarea id="palindrome" name="palindrome" class="form-textarea" placeholder="Type any 2-5 letter palindrome..." rows="5" required data-validate data-validate-pattern="\b(\w)?(\w)\w?\2\1" autocomplete="off" tabindex="0"></textarea>
+                            <textarea id="palindrome" name="palindrome" class="form-textarea" placeholder="Type any palindrome..." rows="5" required data-validate autocomplete="off" tabindex="0"></textarea>
                             <div class="form-group-textarea__errors">
-                                <p class="form-error  form-error--not-filled">This field is required.</p>
-                                <p class="form-error  form-error--not-valid">There is no any 2-5 letter palindrome.</p>
+                                <p class="form-error form-error--not-filled">This field is required.</p>
+                                <p class="form-error form-error--not-valid">There is no a valid palindrome.</p>
                             </div>
                         </div>
 
@@ -129,7 +137,7 @@
                             </label>
 
                             <div class="form-group-checkbox__errors">
-                                <p class="form-error  form-error--not-valid">You haven't accepted the terms and conditions.</p>
+                                <p class="form-error form-error--not-valid">You haven't accepted the terms and conditions.</p>
                             </div>
                         </div>
 

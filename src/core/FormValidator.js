@@ -50,7 +50,7 @@ class FormValidator {
   }
 
   onDomReady() {
-    [...this.formDomNode.querySelectorAll(this.formElementSelector)].forEach(this.initFormElement);
+    [...Array.from(this.formDomNode.querySelectorAll(this.formElementSelector))].forEach(this.initFormElement);
   }
 
   onNodeAdded(nodes) {

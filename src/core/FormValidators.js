@@ -39,7 +39,7 @@ class FormValidators {
   }
 
   onDomReady() {
-    [...document.querySelectorAll(this.formSelector)].forEach(this.initFormValidator);
+    [...Array.from(document.querySelectorAll(this.formSelector))].forEach(this.initFormValidator);
 
     onNodeAdded(this.formSelector, this.onNodeAdded);
   }
