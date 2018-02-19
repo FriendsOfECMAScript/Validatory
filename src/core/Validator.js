@@ -11,12 +11,13 @@
  * @author Mikel Tuesta <mikeltuesta@gmail.com>
  */
 class Validator {
-  constructor({supports, isEmpty, isValid}) {
+  constructor({supports, isEmpty, isValid, getValue}) {
     this.checkParameters(supports, isEmpty, isValid);
 
     this.supports = supports;
-    this.isEmpty = isEmpty;
-    this.isValid = isValid;
+    this.getValue = getValue || (node => node.value);
+    this.isEmpty = isEmpty; // synchronous callback
+    this.isValid = isValid; // sync/async (callback|promise)
   }
 
   checkParameters(supports, isEmpty, isValid) {

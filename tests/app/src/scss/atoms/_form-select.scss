@@ -40,7 +40,7 @@ $form-select-line-height: 20px;
   }
 
   &[data-validation-state="not-filled"],
-  &[data-validation-state="not-valid"] {
+  &[data-validation-state^="not-valid"] {
     .form-select__select {
       border-color: $form-select-border-color-error;
     }

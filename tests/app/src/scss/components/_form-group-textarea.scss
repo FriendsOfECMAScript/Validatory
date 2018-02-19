@@ -17,4 +17,12 @@
   margin-bottom: 10px;
 }
 
-@include form_group_validation_errors('.form-group-textarea__errors');
+.form-group-textarea__spinner {
+  .form-spinner {
+    right: 15px;
+    position: absolute;
+    top: -30px;
+  }
+}
+
+@include form_group_validation('.form-group-textarea__errors', '.form-group-textarea__spinner');

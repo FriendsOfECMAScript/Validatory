@@ -11,10 +11,23 @@
 
 .form-group-input {
   margin-bottom: 30px;
+  position: relative;
+
+  .form-input {
+    padding-right: 45px;
+  }
 }
 
 .form-group-input__label {
   margin-bottom: 10px;
 }
 
-@include form_group_validation_errors('.form-group-input__errors');
+.form-group-input__spinner {
+  .form-spinner {
+    right: 15px;
+    position: absolute;
+    top: -30px;
+  }
+}
+
+@include form_group_validation('.form-group-input__errors', '.form-group-input__spinner');
