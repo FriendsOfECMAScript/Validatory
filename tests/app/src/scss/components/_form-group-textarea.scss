@@ -10,7 +10,8 @@
 @import './../_mixins/form-validation';
 
 .form-group-textarea {
-  margin-bottom: 10px;
+  margin-bottom: 30px;
+  position: relative;
 }
 
 .form-group-textarea__label {
