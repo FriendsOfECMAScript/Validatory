@@ -31,7 +31,7 @@ class FormValidator {
     this.onFormValidationStateChanged = onFormValidationStateChanged;
     this.onFormElementValidationStateChanged = onFormElementValidationStateChanged;
     this.formElements = [];
-    this.state = STATE.NOT_VALIDATED;
+    this.state = STATE.DEFAULT;
     setDomNodeDataAttributeByValidatorState(this.formDomNode, this.state);
 
     this.onDomReady = this.onDomReady.bind(this);
@@ -72,13 +72,16 @@ class FormValidator {
 
     this.formElements.push(validator);
 
-    this.setState(STATE.NOT_VALIDATED);
+    this.setState(STATE.DEFAULT);
   }
 
   onFormSubmit(event) {
-    if (this.validate()) {
-      return;
-    }
+    this.validate().then(valid => {
+      if (valid) {
+        this.formDomNode.removeEventListener('submit', this.onFormSubmit);
+        this.formDomNode.submit();
+      }
+    });
 
     event.preventDefault();
   }
@@ -116,30 +119,41 @@ class FormValidator {
     }
   }
 
+  focusOnFirstInvalidElement() {
+    let
+      valid = true,
+      formElementIndex = 0;
+
+    while(valid && formElementIndex < this.formElements.length) {
+      if (this.formElements[formElementIndex].state === STATE.NOT_VALID) {
+        valid = false;
+      } else {
+        formElementIndex ++;
+      }
+    }
+
+    if (!valid) {
+      this.formElements[formElementIndex].focus();
+    }
+  }
+
   isValid() {
-    return this.formElements.every(formElement => formElement.isValid());
+    return this.formElements.every(formElement => formElement.state === STATE.VALID);
   }
 
   validate() {
-    let firstInvalidInputIndex = -1;
+    this.setState(STATE.VALIDATING);
+    const validationPromises = Promise.all(this.formElements.map(formElement => formElement.validate()));
 
-    const isValid = this.formElements.reduce((isValid, formElement, elementIndex) => {
-      const isElementValid = formElement.validate();
+    return new Promise(resolve => {
+      validationPromises.then(validationResults => {
+        const isValid = validationResults.every(validationResult => validationResult.valid);
+        this.setState(isValid ? STATE.VALID : STATE.NOT_VALID);
+        this.focusOnFirstInvalidElement();
 
-      if (isValid && !isElementValid) {
-        firstInvalidInputIndex = elementIndex;
-      }
-
-      return isValid && isElementValid;
-    }, true);
-
-    if (firstInvalidInputIndex !== -1) {
-      this.formElements[firstInvalidInputIndex].focus();
-    }
-
-    this.setState(isValid ? STATE.VALID : STATE.NOT_VALID);
-
-    return isValid;
+        resolve(isValid);
+      });
+    });
   }
 
   validateOnFormElementStateChanged(formElementValidatorInstance) {
@@ -160,6 +174,7 @@ class FormValidator {
     return new FormElementValidator({
       formElementDomNode,
       emptyFn: validator.isEmpty,
+      getValueFn: validator.getValue,
       validationFn: validator.isValid,
       onFormElementStateChangedCallback: this.validateOnFormElementStateChanged
     });

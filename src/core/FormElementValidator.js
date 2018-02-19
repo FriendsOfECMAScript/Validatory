@@ -10,6 +10,7 @@
 import {STATE} from './FormValidatorState';
 import setDomNodeDataAttributeByValidatorState from './../dom/setDomNodeDataAttributeByValidatorState';
 import dispatchNativeEvent from './../dom/dispatchNativeEvent';
+import cancelablePromise from './../async/cancelablePromise';
 
 /**
  * @author Mikel Tuesta <mikeltuesta@gmail.com>
@@ -18,35 +19,43 @@ class FormElementValidator {
 
   constructor({
     formElementDomNode,
+    getValueFn,
     emptyFn,
     validationFn,
-    onFormElementStateChangedCallback = () => {}
+    onFormElementStateChangedCallback = () => {
+    }
   }) {
     this.formElementDomNode = formElementDomNode;
+    this.getValueFn = getValueFn;
     this.emptyFn = emptyFn;
     this.validationFn = validationFn;
+    this.validationPromise = null;
     this.required = this.formElementDomNode.hasAttribute('required');
     this.validationStateReferenceSelector = this.formElementDomNode.dataset.validationStateReferenceSelector;
-    this.state = STATE.NOT_VALIDATED;
+    this.state = STATE.DEFAULT;
+    this.prevValue = null;
     setDomNodeDataAttributeByValidatorState(this.getValidationStateReferenceDomNode(), this.state);
 
     this.onFormElementStateChangedCallback = onFormElementStateChangedCallback;
-    this.onFormElementInput = this.onFormElementInput.bind(this);
-    this.onFormElementChange = this.onFormElementChange.bind(this);
+    this.validateIfChanged = this.validateIfChanged.bind(this);
 
     this.bindListeners();
   }
 
   bindListeners() {
-    this.formElementDomNode.addEventListener('input', this.onFormElementInput, true);
-    this.formElementDomNode.addEventListener('change', this.onFormElementChange, true);
+    this.formElementDomNode.addEventListener('input', this.validateIfChanged, true);
+    this.formElementDomNode.addEventListener('change', this.validateIfChanged, true);
   }
 
-  onFormElementInput() {
-    this.validate();
-  }
+  validateIfChanged() {
+    const currentValue = this.getValueFn(this.formElementDomNode);
 
-  onFormElementChange() {
+    if (this.prevValue === currentValue) {
+      return;
+    }
+
+    this.prevValue = currentValue;
+
     this.validate();
   }
 
@@ -73,19 +82,35 @@ class FormElementValidator {
   }
 
   isValid() {
-    const isEmpty = this.emptyFn(this.formElementDomNode);
-
-    return !this.required && isEmpty || !isEmpty && this.validationFn(this.formElementDomNode);
+    return Promise.resolve(
+      this.emptyFn(this.formElementDomNode) ? !this.required : this.validationFn(this.formElementDomNode)
+    );
   }
 
   validate() {
-    const
-      isEmpty = this.emptyFn(this.formElementDomNode),
-      isValid = this.isValid();
+    this.setState(STATE.VALIDATING);
+    const isEmpty = this.emptyFn(this.formElementDomNode);
 
-    this.setState(this.required && isEmpty ? STATE.NOT_FILLED : isValid ? STATE.VALID : STATE.NOT_VALID);
+    if (this.validationPromise !== null) {
+      this.validationPromise.cancel();
+      this.validationPromise = null;
+    }
 
-    return isValid;
+    this.validationPromise = cancelablePromise(this.isValid());
+
+    this.validationPromise.promise.then(validationResult => {
+      console.log('validation promise resolved');
+
+      const state = this.required && isEmpty ? STATE.NOT_FILLED : validationResult.valid
+        ? STATE.VALID
+        : validationResult.errorCode ? validationResult.errorCode : STATE.NOT_VALID;
+
+      this.setState(state);
+
+//      this.setState(this.required && isEmpty ? STATE.NOT_FILLED : valid ? STATE.VALID : STATE.NOT_VALID);
+    }).catch(e => {});
+
+    return this.validationPromise.promise;
   }
 }
 

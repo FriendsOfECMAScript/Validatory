@@ -18,7 +18,7 @@ const patternValidator = new Validator({
   isEmpty: node => node.value === '',
   isValid: node => {
     const validationRegExp = new RegExp(node.dataset.validatePattern.trim());
-    return validationRegExp.test(node.value);
+    return {valid: validationRegExp.test(node.value)};
   },
 });
 

@@ -7,17 +7,9 @@
  * file that was distributed with this source code.
  */
 
-import Validator from '../core/Validator';
-
 /**
  * @author Mikel Tuesta <mikeltuesta@gmail.com>
  */
 
-const checkboxValidator = new Validator({
-  supports: node => node.getAttribute('type') === 'checkbox',
-  getValue: node => node.checked,
-  isEmpty: node => false,
-  isValid: node => ({valid: node.checked}),
-});
-
-export default checkboxValidator;
+export default (asyncFn, fullFilledCallback) =>
+  new Promise(resolve => asyncFn.then(result => resolve(fullFilledCallback(result))));

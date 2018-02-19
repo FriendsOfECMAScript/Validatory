@@ -17,4 +17,4 @@
   margin-bottom: 10px;
 }
 
-@include form_group_validation_errors('.form-group-select__errors');
+@include form_group_validation('.form-group-select__errors');

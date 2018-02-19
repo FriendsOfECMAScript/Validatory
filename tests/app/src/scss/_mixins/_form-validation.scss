@@ -8,32 +8,54 @@
 // @author Mikel Tuesta <mikeltuesta@gmail.com>
 
 @import './../_definitions/animations';
+@import './../_variables/transitions';
 
 $form-group-errors-animation: $animation-vertical-node-in;
+$form-group-spinner-transition: $transition-opacity;
 
-@mixin form_group_validation_errors($errorsClassName) {
+@mixin form_group_validation($errorsClassName, $spinnerClassName: '') {
   #{$errorsClassName} {
     display: none;
     position: relative;
     z-index: -1;
   }
 
-  [data-validation-state="not-valid"] + #{$errorsClassName},
-  [data-validation-state="not-filled"] + #{$errorsClassName} {
+  [data-validation-state^="not-valid"] ~ #{$errorsClassName},
+  [data-validation-state="not-filled"] ~ #{$errorsClassName} {
     display: block;
   }
 
-  [data-validation-state="not-valid"] + #{$errorsClassName} {
+  [data-validation-state^="not-valid"] ~ #{$errorsClassName} {
     .form-error--not-valid {
       animation: $form-group-errors-animation;
       display: block;
     }
   }
 
-  [data-validation-state="not-filled"] + #{$errorsClassName} {
+  [data-validation-state="not-filled"] ~ #{$errorsClassName} {
     .form-error--not-filled {
       animation: $form-group-errors-animation;
       display: block;
     }
+  }
+
+  @if $spinnerClassName != '' {
+    #{$spinnerClassName} {
+      opacity: 0;
+      pointer-events: none;
+      position: relative;
+      transition: $form-group-spinner-transition;
+      z-index: 10;
+    }
+    [data-validation-state="validating"] ~ #{$spinnerClassName} {
+      opacity: 1;
+    }
+  }
+}
+
+@mixin form_group_custom_error($customError) {
+  [data-validation-state="not-valid-#{$customError}"] ~ .form-group-input__errors .form-error--not-valid-#{$customError} {
+    animation: $form-group-errors-animation;
+    display: block;
   }
 }

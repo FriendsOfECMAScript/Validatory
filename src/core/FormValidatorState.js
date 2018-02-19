@@ -11,14 +11,16 @@
  * @author Mikel Tuesta <mikeltuesta@gmail.com>
  */
 const STATE = {
-  NOT_VALIDATED: 0,
-  NOT_FILLED: 1,
-  NOT_VALID: 2,
-  VALID: 3
+  DEFAULT: 0,
+  VALIDATING: 1,
+  NOT_FILLED: 2,
+  NOT_VALID: 3,
+  VALID: 4
 };
 
 const STATE_DATA_ATTRIBUTE_VALUE = {
-  [STATE.NOT_VALIDATED]: 'not-validated',
+  [STATE.DEFAULT]: 'default',
+  [STATE.VALIDATING]: 'validating',
   [STATE.NOT_FILLED]: 'not-filled',
   [STATE.NOT_VALID]: 'not-valid',
   [STATE.VALID]: 'valid',

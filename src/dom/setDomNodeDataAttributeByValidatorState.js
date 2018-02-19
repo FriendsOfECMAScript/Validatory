@@ -13,5 +13,5 @@ import {STATE_DATA_ATTRIBUTE_VALUE} from './../core/FormValidatorState';
  * @author Mikel Tuesta <mikeltuesta@gmail.com>
  */
 export default (domNode, validatorState) => {
-  domNode.dataset.validationState = STATE_DATA_ATTRIBUTE_VALUE[validatorState];
+  domNode.dataset.validationState = STATE_DATA_ATTRIBUTE_VALUE[validatorState] || `not-valid-${validatorState}`;
 };
