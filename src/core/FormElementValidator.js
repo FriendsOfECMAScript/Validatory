@@ -83,7 +83,7 @@ class FormElementValidator {
 
   isValid() {
     return Promise.resolve(
-      this.emptyFn(this.formElementDomNode) ? !this.required : this.validationFn(this.formElementDomNode)
+      this.emptyFn(this.formElementDomNode) ? {valid: !this.required} : this.validationFn(this.formElementDomNode)
     );
   }
 

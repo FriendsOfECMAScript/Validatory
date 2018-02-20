@@ -53,7 +53,7 @@ const
       return {valid: false, errorCode: 'zip-code'};
     }
 
-    return asyncValidation(fetch('https://jsonplaceholder.typicode.com/posts/1'), response => {
+    return asyncValidation(fetch('https://jsonplaceholder.typicode.com/posts/1'), () => {
       const valid = node.value === '01005';
 
       return valid ? {valid} : {valid: false, errorCode: 'no-service'};
