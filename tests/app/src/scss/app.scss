@@ -70,8 +70,8 @@ h1 {
   width: 20px;
 }
 
-@include form_group_custom_error('zip-code');
-@include form_group_custom_error('no-service');
+@include form_group_custom_error('.form-group-input__errors', 'zip-code');
+@include form_group_custom_error('.form-group-input__errors', 'no-service');
 
 .row {
   display: flex;

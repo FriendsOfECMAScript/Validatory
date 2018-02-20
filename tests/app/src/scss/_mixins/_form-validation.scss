@@ -53,8 +53,8 @@ $form-group-spinner-transition: $transition-opacity;
   }
 }
 
-@mixin form_group_custom_error($customError) {
-  [data-validation-state="not-valid-#{$customError}"] ~ .form-group-input__errors .form-error--not-valid-#{$customError} {
+@mixin form_group_custom_error($errorsClassName, $customError) {
+  [data-validation-state="not-valid-#{$customError}"] ~ #{$errorsClassName} .form-error--not-valid-#{$customError} {
     animation: $form-group-errors-animation;
     display: block;
   }
