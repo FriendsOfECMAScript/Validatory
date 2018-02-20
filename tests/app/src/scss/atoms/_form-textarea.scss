@@ -53,7 +53,7 @@ $form-textarea-line-height-small: 18px;
   }
 
   &[data-validation-state="not-filled"],
-  &[data-validation-state="not-valid"] {
+  &[data-validation-state^="not-valid"] {
     border-color: $form-textarea-border-color-error;
   }
 

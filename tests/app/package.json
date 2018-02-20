@@ -41,6 +41,8 @@
     "webpack": "^3.5.6"
   },
   "dependencies": {
+    "debounce-promise": "^3.1.0",
+    "es6-promise-debounce": "^1.0.1",
     "jquery": "^3.2.1",
     "validatory": "^0.1.0"
   }

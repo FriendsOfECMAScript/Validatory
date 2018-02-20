@@ -8,6 +8,7 @@
  */
 
 import init from './core/FormValidators';
+import asyncValidation from './async/asyncValidation';
 import validatorRegistry from './core/ValidatorRegistry';
 import Validator from './core/Validator';
 import * as Patterns from './patterns/patterns';
@@ -15,6 +16,7 @@ import {STATE} from './core/FormValidatorState';
 
 export {
   init,
+  asyncValidation,
   validatorRegistry,
   Validator,
   Patterns,

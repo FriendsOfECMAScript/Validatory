@@ -18,4 +18,4 @@
   margin-bottom: 10px;
 }
 
-@include form_group_validation_errors('.form-group-checkbox__errors');
+@include form_group_validation('.form-group-checkbox__errors');

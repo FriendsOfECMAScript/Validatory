@@ -24,8 +24,9 @@ The *form-element* will have the following states:
 
 - **data-validation-state="not-validated"** - This is the initial validation state.
 - **data-validation-state="not-filled"** - If the element is marked as *required* but hasn't any value yet.
-- **data-validation-state="not-valid"** - If the element value hasn't passed the validation process.
 - **data-validation-state="valid"** - The element's value is valid.
+- **data-validation-state="not-valid"** - If the element value hasn't passed the validation process. (Generic state)
+- **data-validation-state="not-valid-custom-state"** - If the element value hasn't passed the validation process and the `custom-state` has been defined.
 
 The *form* will have the following states:
 
@@ -40,6 +41,7 @@ For example, after the validation has been triggered, a non-valid form element w
 
 ## Features
 
+* **Asynchronous validation**
 * Validate **required**
 * Validate values with **regular expressions**
 * **Built-in validation patterns**: 9 digit phone number, Email, ...
@@ -240,21 +242,115 @@ We will use the **data-validation-state** attribute to show/hide the associated 
 
 ### Extending the library's Validators
 In order to extend the library's validators, we will add a new **Validator** instance to the *ValidatorRegistry*, 
-passing the required constructor parameters. For example:
+passing the required constructor parameters.
 
+Your custom validation implementation must return/resolve with an object shaped as follows:
+
+```js
+{
+  valid: boolean,
+  errorCode: string (optional)
+}
+```
+ 
+For example:
+
+#### Synchronous validator
 ```js
 import {validatorRegistry, Validator} from 'validatory';
 
 const customValidator = new Validator({
   supports: node => node.classList.contains('form-textarea'),
   isEmpty: node => node.value === '',
-  isValid: node => node.value === 'test',
+  isValid: node => ({
+    valid: node.value === 'test'
+  }),
 });
 
 validatorRegistry.add(customValidator);
 ```
 
-This way, any `.form-textarea` css class containing element will be validated using the provided implementation.
+#### Asynchronous validator
+```js
+import {validatorRegistry, Validator} from 'validatory';
+
+const yourAsyncValidationPromise = new Promise(resolve => setTimeout(() => resolve(true), 3000));
+
+const customValidator = new Validator({
+  supports: node => node.classList.contains('form-textarea'),
+  isEmpty: node => node.value === '',
+  isValid: node => new Promise(resolve => yourAsyncValidationPromise.then(result => {
+    const valid = result === 'valid'; // Your custom validation
+    
+    return resolve(valid ? {valid} : {valid, errorCode: 'your-custom-error-code'});
+  })),
+});
+
+validatorRegistry.add(customValidator);
+```
+
+### Extending the library's Validators - Async validation helper
+
+The library provides a helper method `asyncValidation` that will wrap your async logic and reduce the boilerplate needed to write a custom async validator.
+
+```js
+import {asyncValidation} from 'validatory';
+
+const isValid = node => asyncValidation(fetch('https://jsonplaceholder.typicode.com/posts/1'), response => 
+  node.value === 'bla bla' ? {valid: true} : {valid: false, errorCode: 'no-service'});
+
+const customAsyncValidator = new Validator({
+  supports: node => node.id === 'asyn-custom-validation-field',
+  isEmpty: node => node.value === '',
+  isValid: node => isValid(node)
+});
+````
+
+### Extending the library's Validators - Full example with Styles & custom `data-states`
+If your are writting a custom validator that needs to display a custom error message based on the validation logic, 
+you will need to implement the validator and add these styles to your app. 
+
+In this example, we are using the `es6-promise-debounce` for debouncing the validation process.
+
+```js
+import debounce from 'es6-promise-debounce';
+import {validatorRegistry, Validator, asyncValidation} from 'validatory';
+
+const
+  debouncedValidation = debounce(node => {
+    console.log('Asynchronous validation started');
+
+    const validZipCode = /^\d{5}$/.test(node.value); // zip code format validation
+
+    if (!validZipCode) {
+      return {valid: false, errorCode: 'zip-code'};
+    }
+
+    return asyncValidation(fetch('https://jsonplaceholder.typicode.com/posts/1'), response => {
+      const valid = node.value === '01005';
+
+      return valid ? {valid} : {valid: false, errorCode: 'no-service'};
+    });
+  }, 500),
+  asyncValidator = new Validator({
+    supports: node => node.id === 'async',
+    isEmpty: node => node.value === '',
+    isValid: node => debouncedValidation(node),
+  });
+
+validatorRegistry.add(asyncValidator);
+``` 
+
+```scss
+@import './../_definitions/animations';
+$form-group-errors-animation: $animation-vertical-node-in;
+
+[data-validation-state="not-valid-zip-code"] ~ .form-group-input__errors .form-error--not-valid-zip-code,
+[data-validation-state="not-valid-no-service"] ~ .form-group-input__errors .form-error--not-valid-no-service {
+  animation: $form-group-errors-animation;
+  display: block;
+}
+```
 
 For a full working example, checkout the [tests/app][1] demo.
 

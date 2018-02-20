@@ -14,7 +14,8 @@
 import './../scss/app.scss';
 
 import $ from 'jquery';
-import {init, STATE, validatorRegistry, Validator} from 'validatory';
+import debounce from 'es6-promise-debounce';
+import {init, STATE, validatorRegistry, Validator, asyncValidation} from 'validatory';
 
 const getStateString = stateValue => {
   switch (stateValue) {
@@ -22,26 +23,55 @@ const getStateString = stateValue => {
       return 'VALID';
     case STATE.NOT_VALID:
       return 'NOT VALID';
-    case STATE.NOT_VALIDATED:
-      return 'NOT VALIDATED';
+    case STATE.DEFAULT:
+      return 'DEFAULT';
+    case STATE.VALIDATING:
+      return 'VALIDATING';
     case STATE.NOT_FILLED:
       return 'NOT FILLED';
   }
+
+  return `CUSTOM: ${stateValue}`;
 };
 
 const palindromeValidator = new Validator({
   supports: node => node.id === 'palindrome',
   isEmpty: node => node.value === '',
-  isValid: node => node.value === node.value.split('').reverse().join(''),
+  isValid: node => ({
+    valid: node.value === node.value.split('').reverse().join('')
+  }),
 });
 validatorRegistry.add(palindromeValidator);
 
 const
+  debouncedValidation = debounce(node => {
+    console.log('Asynchronous validation started');
+
+    const validZipCode = /^\d{5}$/.test(node.value); // zip code format validation
+
+    if (!validZipCode) {
+      return {valid: false, errorCode: 'zip-code'};
+    }
+
+    return asyncValidation(fetch('https://jsonplaceholder.typicode.com/posts/1'), response => {
+      const valid = node.value === '01005';
+
+      return valid ? {valid} : {valid: false, errorCode: 'no-service'};
+    });
+  }, 500),
+  asyncValidator = new Validator({
+    supports: node => node.id === 'async',
+    isEmpty: node => node.value === '',
+    isValid: node => debouncedValidation(node),
+  });
+validatorRegistry.add(asyncValidator);
+
+const
   formValidationStateChangedCallback = formValidatorInstance => {
-    console.log(`Form state changed to: [${getStateString(formValidatorInstance.state)}]`);
+    console.log(`Form state changed to: ${getStateString(formValidatorInstance.state)}`);
   },
   formElementValidationStateChangedCallback = formElementValidatorInstance => {
-    console.log(`Form element state changed to: [${getStateString(formElementValidatorInstance.state)}]`);
+    console.log(`Form element state changed to: ${getStateString(formElementValidatorInstance.state)}`);
   };
 
 init({
