@@ -99,15 +99,11 @@ class FormElementValidator {
     this.validationPromise = cancelablePromise(this.isValid());
 
     this.validationPromise.promise.then(validationResult => {
-      console.log('validation promise resolved');
-
       const state = this.required && isEmpty ? STATE.NOT_FILLED : validationResult.valid
         ? STATE.VALID
         : validationResult.errorCode ? validationResult.errorCode : STATE.NOT_VALID;
 
       this.setState(state);
-
-//      this.setState(this.required && isEmpty ? STATE.NOT_FILLED : valid ? STATE.VALID : STATE.NOT_VALID);
     }).catch(e => {});
 
     return this.validationPromise.promise;
