@@ -15,6 +15,7 @@ import * as Patterns from './../patterns/patterns';
 import {STATE} from './FormValidatorState';
 import validatorRegistry from './ValidatorRegistry';
 import FormElementValidator from './FormElementValidator';
+import dispatchNativeEvent from './../dom/dispatchNativeEvent';
 
 /**
  * @author Mikel Tuesta <mikeltuesta@gmail.com>
@@ -32,6 +33,7 @@ class FormValidator {
     this.onFormElementValidationStateChanged = onFormElementValidationStateChanged;
     this.formElements = [];
     this.state = STATE.DEFAULT;
+    this.needsValidation = true;
     setDomNodeDataAttributeByValidatorState(this.formDomNode, this.state);
 
     this.onDomReady = this.onDomReady.bind(this);
@@ -76,14 +78,18 @@ class FormValidator {
   }
 
   onFormSubmit(event) {
-    this.validate().then(valid => {
-      if (valid) {
-        this.formDomNode.removeEventListener('submit', this.onFormSubmit);
-        this.formDomNode.submit();
-      }
-    });
+    if (this.needsValidation) {
+      event.preventDefault();
+      event.stopPropagation();
+      event.stopImmediatePropagation();
 
-    event.preventDefault();
+      this.validate().then(isValid => {
+        if (isValid) {
+          this.needsValidation = false;
+          dispatchNativeEvent(this.formDomNode, 'submit');
+        }
+      });
+    }
   }
 
   setState(newState) {
@@ -157,6 +163,7 @@ class FormValidator {
   }
 
   validateOnFormElementStateChanged(formElementValidatorInstance) {
+    this.needsValidation = true;
     const isValid = this.isValid();
 
     this.setState(isValid ? STATE.VALID : STATE.NOT_VALID);

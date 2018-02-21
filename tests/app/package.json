@@ -44,6 +44,6 @@
     "debounce-promise": "^3.1.0",
     "es6-promise-debounce": "^1.0.1",
     "jquery": "^3.2.1",
-    "validatory": "^0.1.0"
+    "validatory": "^0.2.4"
   }
 }
