@@ -10,8 +10,28 @@
 /**
  * @author Mikel Tuesta <mikeltuesta@gmail.com>
  */
+(() => {
+  if (typeof window.CustomEvent === 'function') return false;
+
+  const CustomEvent = (event, params) => {
+    params = params || {
+      bubbles: false,
+      cancelable: false,
+      detail: undefined
+    };
+
+    const customEvent = document.createEvent('CustomEvent');
+    customEvent.initCustomEvent(event, params.bubbles, params.cancelable, params.detail);
+
+    return customEvent;
+  };
+
+  CustomEvent.prototype = window.Event.prototype;
+
+  window.CustomEvent = CustomEvent;
+})();
+
 export default (domNode, eventName) => {
-  const event = document.createEvent('HTMLEvents');
-  event.initEvent(eventName, true, false);
-  domNode.dispatchEvent(event);
+  const evt = new CustomEvent(eventName, {bubbles: true, cancelable: true});
+  domNode.dispatchEvent(evt);
 };

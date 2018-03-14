@@ -109,3 +109,17 @@ setTimeout(() => {
   $('.form-group-checkbox').before($.parseHTML(html));
 }, 5000);
 /* eslint-enable max-len */
+
+$(() => {
+  const $form = $('.form');
+
+  $form.on('submit', event => {
+    event.preventDefault();
+    console.log('jQuery form submit listener');
+  });
+
+  $form.get(0).addEventListener('submit', event => {
+    event.preventDefault();
+    console.log('native form submit listener');
+  });
+});
