@@ -52,7 +52,19 @@ class FormValidator {
   }
 
   onDomReady() {
+    this.triggerInitialValidation = this.formDomNode.dataset.validateOnInit;
+
+    console.log(this.triggerInitialValidation);
+
     [...Array.from(this.formDomNode.querySelectorAll(this.formElementSelector))].forEach(this.initFormElement);
+
+    console.log('onDomReady', this.triggerInitialValidation);
+
+    if (!this.triggerInitialValidation) {
+      return;
+    }
+
+    this.validate();
   }
 
   onNodeAdded(nodes) {

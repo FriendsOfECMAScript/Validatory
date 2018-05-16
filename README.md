@@ -62,9 +62,10 @@ In order to work with the library your DOM must, at least, have the following *d
 
 #### form
 If you want to validate a **\<form>**, you must include the `data-validate` attribute. It's validation state will 
-depend on it's elements' validation states. 
+depend on it's elements' validation states. If you want an initial validation to be triggered on dom ready, you must
+include the `data-validate-on-init` attribute.
 ```html
-<form action="/" data-validate></form>
+<form action="/" data-validate [data-validate-on-init]></form>
 ```
 
 #### form-element

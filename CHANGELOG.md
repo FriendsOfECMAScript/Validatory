@@ -5,6 +5,10 @@ This changelog references the relevant changes done between versions.
 To get the diff for a specific change, go to https://github.com/FriendsOfECMAScript/Validatory/commit/XXX where XXX is 
 the change hash. To get the diff between two versions, go to https://github.com/FriendsOfECMAScript/Validatory/compare/v0.1.0...v0.1.1
 
+* 0.3.0
+    * Added `data-validate-on-init` attribute to the `form` dom node for triggering an inital validation.
+* 0.2.6
+    * Updated phone RegExp pattern to support country phone prefixes.
 * 0.2.5
     * Fixed `dispatchNativeEvent` bug on modern browsers. Refactored event dispatching implementation.
 * 0.2.4
