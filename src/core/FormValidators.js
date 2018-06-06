@@ -10,7 +10,7 @@
 import FormValidator from './FormValidator';
 import getDomNodeValidatorSelector from './../dom/getDomNodeValidatorSelector';
 import onDomReady from './../events/onDomReady';
-import onNodeAdded from './../events/onNodeAdded';
+import onDomMutated from './../events/onDomMutated';
 
 /**
  * @author Mikel Tuesta <mikeltuesta@gmail.com>
@@ -28,7 +28,7 @@ class FormValidators {
     this.onFormElementValidationStateChanged = onFormElementValidationStateChanged;
 
     this.onDomReady = this.onDomReady.bind(this);
-    this.onNodeAdded = this.onNodeAdded.bind(this);
+    this.onDomMutated = this.onDomMutated.bind(this);
     this.initFormValidator = this.initFormValidator.bind(this);
 
     this.bindListeners();
@@ -41,11 +41,11 @@ class FormValidators {
   onDomReady() {
     [...Array.from(document.querySelectorAll(this.formSelector))].forEach(this.initFormValidator);
 
-    onNodeAdded(this.formSelector, this.onNodeAdded);
+    onDomMutated({selector: this.formSelector, onDomMutatedCallback: this.onDomMutated});
   }
 
-  onNodeAdded(nodes) {
-    nodes.forEach(this.initFormValidator);
+  onDomMutated({addedNodes}) {
+    addedNodes.forEach(this.initFormValidator);
   }
 
   initFormValidator(formDomNode) {
