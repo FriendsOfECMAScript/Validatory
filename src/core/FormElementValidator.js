@@ -11,6 +11,7 @@ import {STATE} from './FormValidatorState';
 import setDomNodeDataAttributeByValidatorState from './../dom/setDomNodeDataAttributeByValidatorState';
 import dispatchNativeEvent from './../dom/dispatchNativeEvent';
 import cancelablePromise from './../async/cancelablePromise';
+import {isIE11} from './../utils/DetectBrowser';
 
 /**
  * @author Mikel Tuesta <mikeltuesta@gmail.com>
@@ -43,7 +44,11 @@ class FormElementValidator {
   }
 
   bindListeners() {
-    this.formElementDomNode.addEventListener('input', this.validateIfChanged, true);
+    // IE11 triggers the event before any input is entered
+    if (!isIE11()) {
+      this.formElementDomNode.addEventListener('input', this.validateIfChanged, true);
+    }
+
     this.formElementDomNode.addEventListener('change', this.validateIfChanged, true);
   }
 
